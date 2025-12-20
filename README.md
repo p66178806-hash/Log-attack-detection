@@ -20,3 +20,12 @@ python src/enforcer.py --input out.jsonl --inventory data/inventory.csv
 
 ## Demo
 Run the preprocessor to generate alerts, then the enforcer to apply controls. TTL-based rollback is automatic.
+unzip siem-precorrelator.zip
+cd siem-precorrelator
+git init
+git add .
+git commit -m "Initial submission-ready implementation"
+git branch -M main
+git remote add origin https://github.com/<your-username>/siem-precorrelator-com732.git
+git push -u origin main
+git
