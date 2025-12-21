@@ -1,0 +1,17 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Run Preprocessor",
+      "type": "python",
+      "request": "launch",
+      "program": "${workspaceFolder}/src/preprocessor.py",
+      "args": [
+        "--logs", "tests/data/auth.log",
+        "--inventory", "data/inventory.csv",
+        "--out", "out.jsonl"
+      ],
+      "console": "integratedTerminal"
+    }
+  ]
+}

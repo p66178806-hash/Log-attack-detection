@@ -1,0 +1,4 @@
+{"host":"web01","src":"8.8.8.8","count":3,"criticality":"high","threshold":3,"alert":true}
+{"host":"web02","src":"9.9.9.9","count":3,"criticality":"high","threshold":3,"alert":true}
+{"host":"db01","src":"5.5.5.5","count":2,"criticality":"critical","threshold":2,"alert":true}
+{"host":"jump01","src":"7.7.7.7","count":2,"criticality":"critical","threshold":2,"alert":true}

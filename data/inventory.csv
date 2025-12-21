@@ -1,4 +1,5 @@
-
 host,ip,env,owner,criticality,allowlist
-web01,10.0.0.10,prod,teamA,high,192.168.1.1
-db01,10.0.0.20,prod,teamB,critical,192.168.1.2
+web01,10.0.0.10,production,web-team,high,192.168.1.100
+web02,10.0.0.11,production,web-team,high,192.168.1.101
+db01,10.0.0.20,production,db-team,critical,192.168.1.200
+jump01,10.0.0.30,production,secops,critical,192.168.1.201
