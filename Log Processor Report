@@ -1,0 +1,18 @@
+Individual Contribution –  Log Preprocessor Developer
+
+My main contribution to the project focused on the design and implementation of the log preprocessor component, which analyzes Linux authentication logs and identifies potentially hostile login behaviour.
+
+I developed the core log parsing logic to process Linux 'auth.log' files, including support for realistic SSH authentication failure messages. The parser was designed to correctly extract timestamps, hostnames, and source IP addresses from log entries containing patterns such as “Failed password”. To achieve resilience, the parsing logic was refined to deal with genuine log formats that include additional tokens, such as ports and protocol identifiers (e.g., ssh2).
+
+I implemented the aggregation mechanism that groups failed login attempts by host and source IP within a configurable time window. This technique reduces noise by consolidating multiple low-level events into a single summary record, consistent with industry practice of pre-correlating security events before forwarding them to enforcement or SIEM systems.
+
+A key design decision was to make the aggregation window-based and asset-aware. The preprocessor dynamically calculates alert thresholds based on the criticality of the affected asset, obtained from the inventory component. This allows more sensitive systems to trigger alerts with fewer failed attempts, while less critical systems tolerate higher thresholds.
+
+I was also responsible for defining the preprocessor's output format. The component writes line-delimited JSON .json summaries containing the host, source IP, failure count, threshold, asset criticality, and alert status. This formatted output was deliberately chosen to simplify downstream processing by the policy enforcer and to support easy auditing and testing.
+
+To support testing and demonstration, I created realistic sample datasets, including authentication logs with multiple hosts and attack sources. These datasets were used to validate that the preprocessor correctly generates multiple alerts under different conditions and integrates cleanly with the enforcement stage.
+
+Overall, my contribution ensured that the system reliably transforms noisy authentication logs into meaningful, actionable security summaries. The preprocessor forms the foundation of the project by allowing exact detection, risk-based alerting, and efficient downstream enforcement.
+
+---
+
