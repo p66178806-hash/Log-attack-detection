@@ -3,7 +3,9 @@ import gzip
 import csv
 from collections import defaultdict
 from datetime import timedelta
-from utils import parse_time, valid_ip, safe_json
+from pathlib import Path
+from src.utils import parse_time, valid_ip, safe_json, validate_path
+
 
 FAIL_RE = "Failed password"
 
@@ -30,7 +32,9 @@ def load_inventory(path):
 
 
 def open_any(path):
-    return gzip.open(path, "rt", encoding="utf-8", errors="ignore") if path.endswith(".gz") else open(path, "r", encoding="utf-8", errors="ignore")
+    # Ensure path is resolved and safe
+    p = validate_path(path)
+    return gzip.open(p, "rt", encoding="utf-8", errors="ignore") if p.endswith(".gz") else open(p, "r", encoding="utf-8", errors="ignore")
 
 
 def extract_src_ip(parts):
@@ -48,13 +52,15 @@ def extract_src_ip(parts):
 
 
 def run(logs, inventory, window, out):
-    inv = load_inventory(inventory)
+    inv = load_inventory(validate_path(inventory, base_dir=Path(inventory).parent))
 
     buckets = defaultdict(int)
     starts = {}
 
     for p in logs:
-        with open_any(p) as f:
+        # validate each log path
+        p_safe = validate_path(p)
+        with open_any(p_safe) as f:
             for line in f:
                 if FAIL_RE not in line:
                     continue
@@ -92,7 +98,8 @@ def run(logs, inventory, window, out):
 
                 buckets[key] += 1
 
-    with open(out, "w", encoding="utf-8") as o:
+    out_path = validate_path(out, base_dir=Path(out).parent)
+    with open(out_path, "w", encoding="utf-8") as o:
         for (host, src), cnt in buckets.items():
             crit = (inv.get(host, {}).get("criticality") or "low").strip().lower()
             threshold = {"low": 5, "high": 3, "critical": 2}.get(crit, 5)
